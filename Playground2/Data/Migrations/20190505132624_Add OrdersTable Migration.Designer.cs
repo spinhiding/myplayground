@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Playground2.Data;
 
 namespace Playground2.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190505132624_Add OrdersTable Migration")]
+    partial class AddOrdersTableMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -263,6 +265,8 @@ namespace Playground2.Data.Migrations
 
                     b.HasKey("OrderItemId");
 
+                    b.HasIndex("IcecreamId");
+
                     b.HasIndex("OrderId");
 
                     b.ToTable("OrderItems");
@@ -330,7 +334,12 @@ namespace Playground2.Data.Migrations
 
             modelBuilder.Entity("Playground2.Data.Models.OrderItem", b =>
                 {
-                    b.HasOne("Playground2.Data.Models.Order")
+                    b.HasOne("Playground2.Data.Models.Icecream", "Icecream")
+                        .WithMany()
+                        .HasForeignKey("IcecreamId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Playground2.Data.Models.Order", "Order")
                         .WithMany("OrderItems")
                         .HasForeignKey("OrderId");
                 });

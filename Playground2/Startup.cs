@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Playground2.Data.Interfaces;
 using Playground2.Data.Repositories;
 using Playground2.Data.Models;
+using Playground2.Data.Mocks;
 
 namespace Playground2
 {
@@ -27,6 +28,8 @@ namespace Playground2
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
@@ -36,19 +39,24 @@ namespace Playground2
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddDefaultIdentity<IdentityUser>()
                 .AddRoles<IdentityRole>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            services.AddTransient<IIcecreamRepository, IcecreamRepository>();
-            services.AddTransient<ICategoryRepository, CategoryRepository>();
+            //services.AddTransient<IIcecreamRepository, IcecreamRepository>();
+            //services.AddTransient<ICategoryRepository, CategoryRepository>();
+            services.AddTransient<ICategoryRepository, MockCategoryRepository>();
+            services.AddTransient<IIcecreamRepository, MockIcecreamRepository>();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped(sp => Cart.GetCart(sp)); //For multiple access of cart, Ehem, what's sp
 
-            
+            services.AddTransient<IOrderRepository, OrderRepository>();
+
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddMemoryCache(); //Ehem
             services.AddSession(); //Ehem
@@ -85,7 +93,7 @@ namespace Playground2
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            DbInitializer.Seed(app);
+            //DbInitializer.Seed(app);
 
             CreateRolesandUsersAsync(context, userManager, roleManager).Wait();
         }
