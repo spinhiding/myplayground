@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Playground2.Data;
 
-namespace Playground2.Data.Migrations
+namespace Playground2.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190505143654_Add OrdersTable2 Migration")]
-    partial class AddOrdersTable2Migration
+    [Migration("20190505155050_Initial2")]
+    partial class Initial2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

@@ -1,4 +1,5 @@
-﻿using Playground2.Data.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using Playground2.Data.Interfaces;
 using Playground2.Data.Models;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,8 @@ namespace Playground2.Data.Repositories
             _appDbContext = context;
             _cart = cart;
         }
+
+        public IEnumerable<Order> Orders => _appDbContext.Orders;
 
         public Order GetOrderById(string id) => _appDbContext.Orders.FirstOrDefault(p => p.OrderId == id);
 
@@ -44,6 +47,11 @@ namespace Playground2.Data.Repositories
         public void RemoveOrder(Order order)
         {
             _cart.ClearCart();
+
+            var orderItems = _appDbContext.OrderItems.Where(o => o.OrderId == order.OrderId);
+
+            _appDbContext.OrderItems.RemoveRange(orderItems);
+
             _appDbContext.Orders.Remove(order);
 
             _appDbContext.SaveChanges();

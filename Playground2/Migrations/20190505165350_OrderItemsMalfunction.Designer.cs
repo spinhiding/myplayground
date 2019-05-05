@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Playground2.Data;
 
-namespace Playground2.Data.Migrations
+namespace Playground2.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190505144415_Add Retry1 Migration")]
-    partial class AddRetry1Migration
+    [Migration("20190505165350_OrderItemsMalfunction")]
+    partial class OrderItemsMalfunction
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -265,6 +265,8 @@ namespace Playground2.Data.Migrations
 
                     b.HasKey("OrderItemId");
 
+                    b.HasIndex("IcecreamId");
+
                     b.HasIndex("OrderId");
 
                     b.ToTable("OrderItems");
@@ -332,7 +334,12 @@ namespace Playground2.Data.Migrations
 
             modelBuilder.Entity("Playground2.Data.Models.OrderItem", b =>
                 {
-                    b.HasOne("Playground2.Data.Models.Order")
+                    b.HasOne("Playground2.Data.Models.Icecream", "Icecream")
+                        .WithMany()
+                        .HasForeignKey("IcecreamId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Playground2.Data.Models.Order", "Order")
                         .WithMany("OrderItems")
                         .HasForeignKey("OrderId");
                 });

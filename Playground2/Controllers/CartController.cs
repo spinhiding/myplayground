@@ -32,7 +32,7 @@ namespace Playground2.Controllers
             return View(model);
         }
 
-        public RedirectToActionResult AddToShoppingCart(int icecreamid)
+        public RedirectToActionResult AddToCart(int icecreamid)
         {
             Icecream icecream = _icecreamRepository.GetIcecreamById(icecreamid);
             if (icecream != null)
@@ -41,7 +41,7 @@ namespace Playground2.Controllers
             }
             return RedirectToAction("Index");
         }
-        public RedirectToActionResult RemoveFromShoppingCart(int icecreamid)
+        public RedirectToActionResult RemoveFromCart(int icecreamid)
         {
             Icecream icecream = _icecreamRepository.GetIcecreamById(icecreamid);
             if (icecream != null)

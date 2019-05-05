@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Playground2.Data.Interfaces;
 using Playground2.Data.Models;
+using Playground2.Models;
 
 namespace Playground2.Controllers
 {
@@ -19,46 +20,65 @@ namespace Playground2.Controllers
             _cart = cart;
         }
         
-        public ViewResult AddToOrder()
-        {
+        //public ViewResult AddToOrder()
+        //{
             //Order order = new Order { State = "Order" };
             //var items = _cart.GetCartItems();
             //_cart.CartItems = items;
             //_orderRepository.CreateOrder(order);
-            return View();
-        }
-        public IActionResult PlaceOrder(string state)
+          //  return View();
+        //}
+        public ViewResult AddToOrder(string state)
         {
-            Order order = new Order { State = "Order" };
-            var items = _cart.GetCartItems();
-            _cart.CartItems = items;
-            _orderRepository.CreateOrder(order);
+            OrderViewModel model = null;
+            if (!(state.Equals("New")))
+            {
+                Order order = new Order { State = "Order" };
+                var items = _cart.GetCartItems();
+                _cart.CartItems = items;
+                _orderRepository.CreateOrder(order);
 
-            return RedirectToAction("AddToOrder", order);
+                model = new OrderViewModel
+                {
+                    Order = order,
+                    OrderTotal = _cart.GetCartTotal()
+                };
+
+            }
+            return View (model);
         }
-        public IActionResult CancelOrder(Order order)
+        public IActionResult CancelOrder(string orderId)
         {
-            //Order order = _orderRepository.GetOrderById(OrderId);
+            Order order = _orderRepository.GetOrderById(orderId);
             if (order != null)
             {
                 _orderRepository.RemoveOrder(order);
             }
             //remove from ordertable
-            return RedirectToAction ("Home", "Index");
+            return RedirectToAction ("Index", "Home");
         }
 
-        public IActionResult PayNow(Order order)
+        public IActionResult PayNow(string orderId)
         {
             //TODO: say thank you!
             //ViewBag.CheckoutCompleteMessage = "Thanks for your order! :) ";
             //return View();
-
+            Order order = _orderRepository.GetOrderById(orderId);
             if (order != null)
             {
                 _orderRepository.RemoveOrder(order);
             }
             //remove from ordertable
-            return View("Home", "Index");
+            return RedirectToAction ("Index", "Home");
+        }
+
+        public IActionResult ListOrders()
+        {
+
+            OrderListViewModel model = new OrderListViewModel();
+            model.Orders = _orderRepository.Orders;
+
+            return View(model);
         }
     }
 }

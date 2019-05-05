@@ -46,10 +46,9 @@ namespace Playground2
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            //services.AddTransient<IIcecreamRepository, IcecreamRepository>();
-            //services.AddTransient<ICategoryRepository, CategoryRepository>();
-            services.AddTransient<ICategoryRepository, MockCategoryRepository>();
-            services.AddTransient<IIcecreamRepository, MockIcecreamRepository>();
+            services.AddTransient<IIcecreamRepository, IcecreamRepository>();
+            services.AddTransient<ICategoryRepository, CategoryRepository>();
+
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped(sp => Cart.GetCart(sp)); //For multiple access of cart, Ehem, what's sp
@@ -93,7 +92,7 @@ namespace Playground2
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            //DbInitializer.Seed(app);
+            DbInitializer.Seed(app);
 
             CreateRolesandUsersAsync(context, userManager, roleManager).Wait();
         }

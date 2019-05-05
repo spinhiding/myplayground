@@ -1,16 +1,21 @@
-﻿@model Order
+﻿@model OrderViewModel
     <div class="row orderForm">
 
         <div class="row checkoutForm">
-            <h2>Just a step away...</h2>
+            <h2>Just 1 step away...</h2>
         </div>
-
-
-        <div class="text-right">
-                <div class="btn-group ">
-                    <a class="btn btn-success" asp-controller="Order" asp-action="PlaceOrder" asp-route-state="Order">Place Order</a>
-                    <a class="btn btn-success" asp-controller="Order" asp-action="CancelOrder"  asp-route-order="@Model">Cancel Order</a>
-                    <a class="btn btn-success" asp-controller="Order" asp-action="PayNow" asp-route-order="@Model" >Pay</a>
+        @{
+            string  id = "null";
+            if (Model != null)
+            {
+                id = Model.Order.OrderId;
+            }
+        }
+        <div class="btn-block">
+                <div class="btn-group-vertical">
+                    <br /><a class="btn btn-success" asp-controller="Order" asp-action="AddToOrder" asp-route-state="Order">Place Order</a>
+                    <br /><a class="btn btn-success" asp-controller="Order" asp-action="CancelOrder"  asp-route-orderid="@id">Cancel Order</a>
+                    <br /><a class="btn btn-success" asp-controller="Order" asp-action="PayNow" asp-route-orderid="@id">Pay</a>
                 </div>
          </div>
     </div>

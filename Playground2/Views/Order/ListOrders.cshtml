@@ -1,0 +1,28 @@
+﻿@model OrderListViewModel
+
+
+
+<div class="row checkoutForm">
+    <h2>Orders to be served</h2>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Order No.</th>
+                <th>Date of order</th>
+                <th>Quanity</th>
+                <th>Ordering state</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model.Orders)
+            {
+            <tr>
+                <td class="text-center">Number</td>
+                <td class="text-left">@order.OrderDate.ToLongDateString()</td>
+                <td class="text-left">Count</td>
+                <td class="text-left">@order.State</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+
