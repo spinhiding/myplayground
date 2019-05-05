@@ -1,0 +1,19 @@
+﻿@model IcecreamListViewModel
+<!-- If not using partialview
+@foreach (var ice in Model.Icecreams)
+{
+    <div>
+        <h4>Icecream ID: @ice.IcecreamId</h4>
+        <p>Cost: @ice.Cost.ToString("c")
+        <br>Category: @ice.Category.Name</p>
+    </div>
+}
+-->
+    <div class="row marginTop">
+        @foreach (var ice in Model.Icecreams)
+        {
+            @await Html.PartialAsync("ProductSummary", ice)
+        }
+    </div>
+
+

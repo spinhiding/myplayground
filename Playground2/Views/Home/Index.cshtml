@@ -1,0 +1,17 @@
+﻿@model HomeViewModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome to theMarket!</h1>
+    <h1>What's waiting to melt in YOUR mouth...</h1>
+</div>
+<br /><br /><br />
+
+<div class="row marginTop">
+    @foreach (var ice in Model.Icecreams)
+    {
+        @await Html.PartialAsync("ProductSummary", ice)
+    }
+</div>
